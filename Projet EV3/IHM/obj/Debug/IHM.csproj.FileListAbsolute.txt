@@ -1,0 +1,2 @@
+c:\users\dorian\documents\visual studio 2013\Projects\Projet EV3\IHM\bin\Debug\IHM.exe.config
+D:\IDSE\EV3\Projet EV3\IHM\bin\Debug\IHM.exe.config
