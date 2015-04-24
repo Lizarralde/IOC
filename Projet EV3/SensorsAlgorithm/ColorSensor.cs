@@ -47,7 +47,7 @@ namespace SensorsAlgorithm
                 }
                 else
                 {
-                    throw new Exception("Le numéro de la couleur doit être compris entre 0 et 7");
+                    throw new InvalidColorValueException("Le numéro de la couleur doit être compris entre 0 et 7");
                 }
             }
         }
@@ -106,9 +106,10 @@ namespace SensorsAlgorithm
         /// </summary>
         /// <param name="obj">Objet à comparer avec l'objet actif. </param>
         /// <returns>true si l'objet spécifié est égal à l'objet actif ; sinon, false.</returns>
-        public override bool Equals(ColorSensor obj)
+        public override bool Equals(Object obj)
         {
-            return ColorValue.Equals(obj.ColorValue);
+            ColorSensor o = (ColorSensor)obj;
+            return ColorValue.Equals(o.ColorValue);
         }
     }
 }
