@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,10 +10,10 @@ namespace SensorsAlgorithm
     /// <summary>
     /// Créer un object de la classe ColorSensor.
     /// </summary>
-    public class ColorSensor
+    public class ColorSensor : INotifyPropertyChanged
     {
         //--- PROPERTIES
-        private int colorValue;
+        private int _colorValue;
 
         //--- CONSTRUCTORS
         /// <summary>
@@ -33,17 +34,23 @@ namespace SensorsAlgorithm
         }
 
         //--- GETTERS AND SETTERS
+        
+        /// <summary>
+        /// Retourne
+        /// </summary>
         public int ColorValue
         {
             get
             {
-                return colorValue;
+                return _colorValue;
             }
             set
             {
                 if (value >= 0 && value <= 7)
                 {
-                    colorValue = value;
+                    _colorValue = value;
+                    OnColorChanged(this);
+                    OnPropertyChanged("ColorValue");
                 }
                 else
                 {
@@ -59,7 +66,7 @@ namespace SensorsAlgorithm
         public String GetColorName()
         {
             String res = "";
-            switch (colorValue)
+            switch (_colorValue)
             {
                 case 0:
                     res = "Aucune";
@@ -92,6 +99,7 @@ namespace SensorsAlgorithm
             return res;
         }
 
+
         /// <summary>
         /// Retourne une chaîne qui représente l'objet actif.
         /// </summary>
@@ -110,6 +118,21 @@ namespace SensorsAlgorithm
         {
             ColorSensor o = (ColorSensor)obj;
             return ColorValue.Equals(o.ColorValue);
+        }
+        
+        //--- NOTIFY A CHANGE OF COLOR
+        public delegate void DelegateNotifyColor(Object sensor);
+        public event DelegateNotifyColor OnColorChanged;
+
+        
+        //--- NOTIFY A PROPERTY CHANGED
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged(string propertyName)
+        {
+            if (this.PropertyChanged != null)
+            {
+                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
     }
 }

@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using SensorsAlgorithm;
 
 namespace IHM
 {
@@ -20,10 +21,23 @@ namespace IHM
     /// </summary>
     public partial class MainWindow : Window
     {
+        //--- PROPERTIES
+        private Boolean _autoModeIsOn;
+        private Boolean _goalAchieved;
+
+        private ColorSensor _colorSensor;
+        private UltrasonicSensor _ultrasonicSensor;
+        
         //--- CONSTRUCTOR
         public MainWindow()
         {
             InitializeComponent();
+
+            _colorSensor = new ColorSensor();
+            _ultrasonicSensor = new UltrasonicSensor();
+
+            //_colorSensor.OnColorChanged += new ColorSensor.DelegateNotifyColor(AutoMode());
+            //_ultrasonicSensor.OnDistanceChanged += new UltrasonicSensor.DelegateNotifyDistance(AutoMode())
         }
 
         //--- CONTROL MODE METHODS
@@ -37,6 +51,7 @@ namespace IHM
             ButtonD.IsEnabled = false;
 
             // Tell the mindstorm auto mode is on by starting the thread
+            _autoModeIsOn = true;
         }
         private void RadioBoxManual_Click(object sender, RoutedEventArgs e)
         {
@@ -48,6 +63,7 @@ namespace IHM
             ButtonD.IsEnabled = true;
 
             // Tell the mindstorm manual mode is on by stopping the thread for the auto mode.     
+            _autoModeIsOn = false;
         }
 
         private void ButtonZ_Click(object sender, RoutedEventArgs e)
@@ -87,6 +103,7 @@ namespace IHM
                     break;
             }
         }
+        
         //--- BUTTONS METHODS
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
@@ -97,6 +114,52 @@ namespace IHM
             // start thread here
         }
 
-        
+        //--- AUTO MODE MANAGEMENT
+        public Boolean AutoModeIsOn
+        {
+            get
+            {
+                return _autoModeIsOn;
+            }
+            set
+            {
+                _autoModeIsOn = value;
+            }
+        }
+
+        public Boolean GoalAchieved
+        {
+            get
+            {
+                return _goalAchieved;
+            }
+            set
+            {
+                _goalAchieved = value;
+            }
+        }
+
+        public void AutoMode(Object sensor)
+        {
+            if (sensor is ColorSensor)
+            {
+                ColorSensor s = (ColorSensor)sensor;
+                
+                if (s.ColorValue == 1) //<-- TODO : remplacer avec une ref qui pointe sur une ressource paramètrable
+                {
+                    GoalAchieved = true;
+                    TextBoxConsole.Text += "\nGAME OVER -> Color on the ground Found !";
+                    // stop the car here;
+                }
+            }
+            else if (sensor is UltrasonicSensor)
+            {
+                UltrasonicSensor s = (UltrasonicSensor)sensor;
+                
+                // mettre algorithme de pilotage auto ici en fonction des objets détéctés.
+                // if s.DistanceProximity == Distances.DANGER .....
+            }
+            
+        }
     }
 }
