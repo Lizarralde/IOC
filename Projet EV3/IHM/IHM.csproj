@@ -93,6 +93,16 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SensorsAlgorithm\SensorsAlgorithm.csproj">
+      <Project>{4ce2664e-bc4f-44ac-9b69-47d85b3f52e8}</Project>
+      <Name>SensorsAlgorithm</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WifiTransfer\WifiTransfer.csproj">
+      <Project>{612db983-ae81-4b1e-b35d-d8016ef2aec3}</Project>
+      <Name>WifiTransfer</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,0 +1,5 @@
+D:\IOC\Projet EV3\WifiTransfer\bin\Debug\WifiTransfer.dll
+D:\IOC\Projet EV3\WifiTransfer\bin\Debug\WifiTransfer.pdb
+D:\IOC\Projet EV3\WifiTransfer\obj\Debug\WifiTransfer.csprojResolveAssemblyReference.cache
+D:\IOC\Projet EV3\WifiTransfer\obj\Debug\WifiTransfer.dll
+D:\IOC\Projet EV3\WifiTransfer\obj\Debug\WifiTransfer.pdb

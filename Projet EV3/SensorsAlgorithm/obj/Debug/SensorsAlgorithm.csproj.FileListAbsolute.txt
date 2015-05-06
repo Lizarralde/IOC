@@ -1,0 +1,4 @@
+D:\IOC\Projet EV3\SensorsAlgorithm\bin\Debug\SensorsAlgorithm.dll
+D:\IOC\Projet EV3\SensorsAlgorithm\bin\Debug\SensorsAlgorithm.pdb
+D:\IOC\Projet EV3\SensorsAlgorithm\obj\Debug\SensorsAlgorithm.dll
+D:\IOC\Projet EV3\SensorsAlgorithm\obj\Debug\SensorsAlgorithm.pdb
