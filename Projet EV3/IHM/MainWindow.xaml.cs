@@ -36,8 +36,8 @@ namespace IHM
             _colorSensor = new ColorSensor();
             _ultrasonicSensor = new UltrasonicSensor();
 
-            //_colorSensor.OnColorChanged += new ColorSensor.DelegateNotifyColor(AutoMode());
-            //_ultrasonicSensor.OnDistanceChanged += new UltrasonicSensor.DelegateNotifyDistance(AutoMode())
+            _colorSensor.OnColorChanged += AutoMode;
+            //_ultrasonicSensor.OnDistanceChanged += AutoMode;
         }
 
         //--- CONTROL MODE METHODS

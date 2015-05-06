@@ -49,7 +49,8 @@ namespace SensorsAlgorithm
                 if (value >= 0 && value <= 7)
                 {
                     _colorValue = value;
-                    OnColorChanged(this);
+                    if(OnColorChanged != null)
+                        OnColorChanged(this);
                     OnPropertyChanged("ColorValue");
                 }
                 else
