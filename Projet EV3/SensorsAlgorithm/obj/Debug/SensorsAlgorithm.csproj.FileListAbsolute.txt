@@ -2,3 +2,13 @@ D:\IOC\Projet EV3\SensorsAlgorithm\bin\Debug\SensorsAlgorithm.dll
 D:\IOC\Projet EV3\SensorsAlgorithm\bin\Debug\SensorsAlgorithm.pdb
 D:\IOC\Projet EV3\SensorsAlgorithm\obj\Debug\SensorsAlgorithm.dll
 D:\IOC\Projet EV3\SensorsAlgorithm\obj\Debug\SensorsAlgorithm.pdb
+C:\Users\HUK\Documents\Visual Studio 2013\Projects\IOC\Projet EV3\SensorsAlgorithm\bin\Debug\SensorsAlgorithm.dll
+C:\Users\HUK\Documents\Visual Studio 2013\Projects\IOC\Projet EV3\SensorsAlgorithm\bin\Debug\SensorsAlgorithm.pdb
+C:\Users\HUK\Documents\Visual Studio 2013\Projects\IOC\Projet EV3\SensorsAlgorithm\bin\Debug\WifiTransfer.dll
+C:\Users\HUK\Documents\Visual Studio 2013\Projects\IOC\Projet EV3\SensorsAlgorithm\bin\Debug\MonoBrick.dll
+C:\Users\HUK\Documents\Visual Studio 2013\Projects\IOC\Projet EV3\SensorsAlgorithm\bin\Debug\LibUsbDotNet.dll
+C:\Users\HUK\Documents\Visual Studio 2013\Projects\IOC\Projet EV3\SensorsAlgorithm\bin\Debug\WifiTransfer.pdb
+C:\Users\HUK\Documents\Visual Studio 2013\Projects\IOC\Projet EV3\SensorsAlgorithm\bin\Debug\MonoBrick.xml
+C:\Users\HUK\Documents\Visual Studio 2013\Projects\IOC\Projet EV3\SensorsAlgorithm\obj\Debug\SensorsAlgorithm.csprojResolveAssemblyReference.cache
+C:\Users\HUK\Documents\Visual Studio 2013\Projects\IOC\Projet EV3\SensorsAlgorithm\obj\Debug\SensorsAlgorithm.dll
+C:\Users\HUK\Documents\Visual Studio 2013\Projects\IOC\Projet EV3\SensorsAlgorithm\obj\Debug\SensorsAlgorithm.pdb

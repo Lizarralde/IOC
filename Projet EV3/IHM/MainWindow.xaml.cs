@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using SensorsAlgorithm;
+using System.Windows.Threading;
 
 namespace IHM
 {
@@ -25,19 +26,20 @@ namespace IHM
         private Boolean _autoModeIsOn;
         private Boolean _goalAchieved;
 
-        private ColorSensor _colorSensor;
-        private UltrasonicSensor _ultrasonicSensor;
+        private SensorControler _controler;
+        private Dispatcher _dispatcher;
         
         //--- CONSTRUCTOR
         public MainWindow()
         {
             InitializeComponent();
 
-            _colorSensor = new ColorSensor();
-            _ultrasonicSensor = new UltrasonicSensor();
+            _controler = new SensorControler("usb");
 
-            _colorSensor.OnColorChanged += AutoMode;
+            _controler.ColorSensor.OnColorChanged += AutoMode;
             //_ultrasonicSensor.OnDistanceChanged += AutoMode;
+
+            _dispatcher = Application.Current.Dispatcher;
         }
 
         //--- CONTROL MODE METHODS
@@ -52,6 +54,7 @@ namespace IHM
 
             // Tell the mindstorm auto mode is on by starting the thread
             _autoModeIsOn = true;
+            
         }
         private void RadioBoxManual_Click(object sender, RoutedEventArgs e)
         {
@@ -64,6 +67,9 @@ namespace IHM
 
             // Tell the mindstorm manual mode is on by stopping the thread for the auto mode.     
             _autoModeIsOn = false;
+
+            // Stop Car driving thread
+            _controler.StopThread();
         }
 
         private void ButtonZ_Click(object sender, RoutedEventArgs e)
@@ -107,11 +113,17 @@ namespace IHM
         //--- BUTTONS METHODS
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
+
+            // Start Car driving thread
+            _controler.StopThread();
             this.Close();
         }
         private void ButtonStart_Click(object sender, RoutedEventArgs e)
         {
             // start thread here
+
+            // Start Car driving thread
+            _controler.StartThread();
         }
 
         //--- AUTO MODE MANAGEMENT
@@ -139,12 +151,17 @@ namespace IHM
             }
         }
 
-        public void AutoMode(Object sensor)
+        public void AutoMode(Object sender)
+        {
+            _dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { AutoModeInternal(sender); }));
+        }
+        private void AutoModeInternal(Object sensor)
         {
             if (sensor is ColorSensor)
             {
                 ColorSensor s = (ColorSensor)sensor;
-                
+
+                TextBoxColorSensor.Text = s.ToString();
                 if (s.ColorValue == 1) //<-- TODO : remplacer avec une ref qui pointe sur une ressource paramètrable
                 {
                     GoalAchieved = true;

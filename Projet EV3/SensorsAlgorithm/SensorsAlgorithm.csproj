@@ -44,7 +44,14 @@
     <Compile Include="Distances.cs" />
     <Compile Include="InvalidColorValueException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SensorControler.cs" />
     <Compile Include="UltrasonicSensor.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WifiTransfer\WifiTransfer.csproj">
+      <Project>{612db983-ae81-4b1e-b35d-d8016ef2aec3}</Project>
+      <Name>WifiTransfer</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

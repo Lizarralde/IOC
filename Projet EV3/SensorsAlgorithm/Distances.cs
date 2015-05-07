@@ -8,6 +8,7 @@ namespace SensorsAlgorithm
 {
     public enum Distances
     {
-        DANGER = 0
+        DANGER = 0,
+        SURE = 1
     }
 }
