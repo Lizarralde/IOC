@@ -15,21 +15,18 @@ namespace WifiTransfer
         public Adapter(string connectionMethod)
         {
             brick = new Brick<Sensor, Sensor, Sensor, Sensor>(connectionMethod);
-            //brick.Connection.Open();
+            brick.Connection.Open();
             brick.Sensor1 = new IRSensor(IRMode.Proximity);
             brick.Sensor2 = new ColorSensor(ColorMode.Color);
             brick.Vehicle.LeftPort = MotorPort.OutA;
             brick.Vehicle.RightPort = MotorPort.OutD;
             brick.Vehicle.ReverseLeft = false;
-            brick.Vehicle.ReverseRight = false;  
-            
-
+            brick.Vehicle.ReverseRight = false;
         }
 
         public void ControlCar(int direction, sbyte speed)
         {
-            // TODO : discomment when connection work
-            /*switch (direction)
+            switch (direction)
             {
                 case 8:
                     brick.Vehicle.Forward(speed);
@@ -58,19 +55,17 @@ namespace WifiTransfer
                 case 0:
                     brick.Vehicle.Off();
                     break;
-            }*/
+            }
         }
 
         public string GetColorSensorValue()
         {
-            // TODO : discomment when connection work
-            //return brick.Sensor2.ReadAsString();
-            return "5";
+            return brick.Sensor1.ReadAsString();
         }
 
         public string GetUltrasonicSensorValue()
         {
-            return brick.Sensor1.ReadAsString();
+            return brick.Sensor2.ReadAsString();
         }
 
         public void Close()

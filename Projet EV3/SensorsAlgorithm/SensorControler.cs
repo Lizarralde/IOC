@@ -15,6 +15,7 @@ namespace SensorsAlgorithm
         private Adapter adapter;
         private Thread algoThread;
         private bool driving;
+        private int colorTarget;
 
         private Mutex mut;
 
@@ -43,11 +44,27 @@ namespace SensorsAlgorithm
 
         public SensorControler(string connectionMethod)
         {
-
+            ColorTarget = 1;
             colorSensor = new ColorSensor();
             ultrasonicSensor = new UltrasonicSensor();
             adapter = new Adapter(connectionMethod);
             mut = new Mutex();
+        }
+
+        public int ColorTarget
+        {
+            get { return colorTarget; }
+            set
+            {
+                if (value >= 0 && value <= 7)
+                {
+                    colorTarget = value;
+                }
+                else
+                {
+                    throw new InvalidColorValueException("Le numéro de la couleur doit être compris entre 0 et 7");
+                }
+            }
         }
 
         public void AbortThread()
@@ -78,24 +95,32 @@ namespace SensorsAlgorithm
         {
             mut.WaitOne();
             Driving = true;
-            Directions direction = Directions.STOP;
-            Distances distance = Distances.SURE;
-            sbyte speed = 50;
+
+            adapter.ControlCar((int)Directions.FORWARD, (sbyte)65);
+            Thread.Sleep(250);
 
             do
             {
                 mut.ReleaseMutex();
 
                 colorSensor.ColorValue = FormatColorValue(adapter.GetColorSensorValue());
-                //ultrasonicSensor.UltrasonicValue = FormatUltrasonicValue(adapter.GetUltrasonicSensorValue());
+                ultrasonicSensor.UltrasonicValue = FormatUltrasonicValue(adapter.GetUltrasonicSensorValue());
 
-                // ********************
-                // TODO : ALGO ICI
-                // ********************
+                if (!colorSensor.ColorValue.Equals(ColorTarget))
+                {
+                    adapter.ControlCar((int)Directions.BACKWARD, (sbyte)100);
+                    Thread.Sleep(750);
+                    adapter.ControlCar((int)Directions.TURN_LEFT, (sbyte)75);
+                    Thread.Sleep(2000);
+                    adapter.ControlCar((int)Directions.FORWARD, (sbyte)65);
+                    Thread.Sleep(250);
+                }
+                else
+                {
+                    adapter.ControlCar((int)Directions.STOP, (sbyte)0);
+                    Thread.Sleep(250);
+                }
 
-                adapter.ControlCar((int)direction, speed);
-
-                Thread.Sleep(250);
                 mut.WaitOne();
             } while (Driving);
 
@@ -105,7 +130,7 @@ namespace SensorsAlgorithm
 
         private int FormatUltrasonicValue(string p)
         {
-            throw new NotImplementedException();
+            return 20;
         }
 
         private int FormatColorValue(string p)
