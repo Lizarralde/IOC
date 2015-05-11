@@ -112,6 +112,7 @@ namespace IHM
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
             _controler.StopThread();
+            _controler.closeAdapter();
             this.Close();
         }
 

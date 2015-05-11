@@ -22,7 +22,7 @@
         <TextBox x:Name="TextBoxDirection" HorizontalAlignment="Left" Height="23" Margin="552,145,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="61" IsReadOnly="True"/>
 
         <Label Content="Target color" HorizontalAlignment="Left" Margin="430,190,0,0" VerticalAlignment="Top"/>
-        <ComboBox x:Name="ComboBoxTargetColor" HorizontalAlignment="Left" Margin="552,193,0,0" VerticalAlignment="Top" Width="61">
+        <ComboBox x:Name="ComboBoxTargetColor" HorizontalAlignment="Left" Margin="552,193,0,0" VerticalAlignment="Top" Width="61" SelectedIndex="1">
             <System:String>None</System:String>
             <System:String>Black</System:String>
             <System:String>Blue</System:String>

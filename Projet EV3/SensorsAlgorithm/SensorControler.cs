@@ -67,6 +67,11 @@ namespace SensorsAlgorithm
             }
         }
 
+        public void closeAdapter()
+        {
+            adapter.Close();
+        }
+
         public void AbortThread()
         {
             algoThread.Abort();
@@ -84,7 +89,6 @@ namespace SensorsAlgorithm
                 algoThread.Join();
                 algoThread = null;
             }
-            adapter.Close();
         }
 
         public void StartThread()
@@ -114,16 +118,16 @@ namespace SensorsAlgorithm
                 }
                 else if (ultrasonicSensor.UltrasonicValue < 15)
                 {
-                    adapter.ControlCar((int)Directions.BACKWARD, (sbyte)10);
+                    adapter.ControlCar((int)Directions.BACKWARD, (sbyte)100);
                     Thread.Sleep(750);
-                    adapter.ControlCar((int)Directions.TURN_LEFT, (sbyte)10);
+                    adapter.ControlCar((int)Directions.TURN_LEFT, (sbyte)65);
                     Thread.Sleep(2000);
-                    adapter.ControlCar((int)Directions.FORWARD, (sbyte)10);
+                    adapter.ControlCar((int)Directions.FORWARD, (sbyte)65);
                     Thread.Sleep(250);
                 }
                 else
                 {
-                    adapter.ControlCar((int)Directions.FORWARD, (sbyte)10);
+                    adapter.ControlCar((int)Directions.FORWARD, (sbyte)65);
                     Thread.Sleep(250);
                 }
 

@@ -29,7 +29,7 @@ namespace WifiTransfer
             switch (direction)
             {
                 case 8:
-                    // brick.Vehicle.Forward(speed);
+                    brick.Vehicle.Forward(speed);
                     break;
                 case 2:
                     brick.Vehicle.Backward(speed);
