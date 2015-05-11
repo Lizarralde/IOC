@@ -35,11 +35,20 @@ namespace IHM
             InitializeComponent();
 
             _controler = new SensorControler("usb");
-
             _controler.ColorSensor.OnColorChanged += AutoMode;
             //_ultrasonicSensor.OnDistanceChanged += AutoMode;
-
             _dispatcher = Application.Current.Dispatcher;
+
+            _autoModeIsOn = false;
+            _goalAchieved = false;
+
+            /*
+            var binding = new Binding("ColorValue");
+            binding.Source = TextBoxColorSensor;
+            binding.Path = _controler.ColorSensor.
+            //      binding.Path = new PropertyPath(ListBox.SelectedValueProperty);
+            TextBoxColorSensor.SetBinding(TextBlock.TextProperty, binding);
+             */
         }
 
         //--- CONTROL MODE METHODS
@@ -47,23 +56,32 @@ namespace IHM
         {
             // Disable controls
             ButtonStart.IsEnabled = true;
-            ButtonZ.IsEnabled = false;
-            ButtonS.IsEnabled = false;
-            ButtonQ.IsEnabled = false;
-            ButtonD.IsEnabled = false;
+            Button1.IsEnabled = false;
+            Button2.IsEnabled = false;
+            Button3.IsEnabled = false;
+            Button4.IsEnabled = false;
+            Button5.IsEnabled = false;
+            Button6.IsEnabled = false;
+            Button7.IsEnabled = false;
+            Button8.IsEnabled = false;
+            Button9.IsEnabled = false;
 
             // Tell the mindstorm auto mode is on by starting the thread
             _autoModeIsOn = true;
-            
         }
         private void RadioBoxManual_Click(object sender, RoutedEventArgs e)
         {
             // Disable controls
             ButtonStart.IsEnabled = false;
-            ButtonZ.IsEnabled = true;
-            ButtonS.IsEnabled = true;
-            ButtonQ.IsEnabled = true;
-            ButtonD.IsEnabled = true;
+            Button1.IsEnabled = true;
+            Button2.IsEnabled = true;
+            Button3.IsEnabled = true;
+            Button4.IsEnabled = true;
+            Button5.IsEnabled = true;
+            Button6.IsEnabled = true;
+            Button7.IsEnabled = true;
+            Button8.IsEnabled = true;
+            Button9.IsEnabled = true;
 
             // Tell the mindstorm manual mode is on by stopping the thread for the auto mode.     
             _autoModeIsOn = false;
@@ -72,38 +90,75 @@ namespace IHM
             _controler.StopThread();
         }
 
-        private void ButtonZ_Click(object sender, RoutedEventArgs e)
+        private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            
+            Button b = (Button)sender;
+            if (b.Equals(Button1)){
+                //_controler.ExecuteCommand(Directions.BACKWARD_LEFT);
+            }
+            if (b.Equals(Button2))
+            {
+                //_controler.ExecuteCommand(Directions.BACKWARD);
+            }
+            if (b.Equals(Button3))
+            {
+                //_controler.ExecuteCommand(Directions.BACKWARD_RIGHT);
+            }
+            if (b.Equals(Button4))
+            {
+                //_controler.ExecuteCommand(Directions.TURN_LEFT);
+            }
+            if (b.Equals(Button5))
+            {
+               //_controler.ExecuteCommand(Directions.STOP);
+            }
+            if (b.Equals(Button6))
+            {
+               //_controler.ExecuteCommand(Directions.TURN_RIGHT);
+            }
+            if (b.Equals(Button7))
+            {
+               //_controler.ExecuteCommand(Directions.FORWARD_LEFT);
+            }
+            if (b.Equals(Button8))
+            {
+               //_controler.ExecuteCommand(Directions.FORWARD);
+            }
+            if (b.Equals(Button9))
+            {
+               //_controler.ExecuteCommand(Directions.FORWARD_RIGHT);
+            }
         }
-        private void ButtonS_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-        private void ButtonQ_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-        private void ButtonD_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             switch (e.Key)
             {
-                case Key.Z:
-                    ButtonZ.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                case Key.NumPad1:
+                    //_controler.ExecuteCommand(Directions.BACKWARD_LEFT);
                     break;
-                case Key.S:
-                    ButtonS.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                case Key.NumPad2:
+                    //_controler.ExecuteCommand(Directions.BACKWARD);
                     break;
-                case Key.Q:
-                    ButtonQ.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                case Key.NumPad3:
+                    //_controler.ExecuteCommand(Directions.BACKWARD_RIGHT);
                     break;
-                case Key.D:
-                    ButtonD.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                case Key.NumPad4:
+                    //_controler.ExecuteCommand(Directions.TURN_LEFT);
+                    break;
+                case Key.NumPad5:
+                    //_controler.ExecuteCommand(Directions.STOP);
+                    break;
+                case Key.NumPad6:
+                    //_controler.ExecuteCommand(Directions.TURN_RIGHT);
+                    break;
+                case Key.NumPad7:
+                    //_controler.ExecuteCommand(Directions.FORWARD_LEFT);
+                    break;
+                case Key.NumPad8:
+                    //_controler.ExecuteCommand(Directions.FORWARD);
+                    break;
+                case Key.NumPad9:
+                    //_controler.ExecuteCommand(Directions.FORWARD_RIGHT);
                     break;
                 default:
                     break;
@@ -113,16 +168,11 @@ namespace IHM
         //--- BUTTONS METHODS
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
-
-            // Start Car driving thread
             _controler.StopThread();
             this.Close();
         }
         private void ButtonStart_Click(object sender, RoutedEventArgs e)
         {
-            // start thread here
-
-            // Start Car driving thread
             _controler.StartThread();
         }
 
@@ -151,32 +201,44 @@ namespace IHM
             }
         }
 
+        // Method for the delegate wich
         public void AutoMode(Object sender)
         {
             _dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { AutoModeInternal(sender); }));
         }
+
+        /// <summary>
+        /// Update the View.
+        /// </summary>
+        /// <param name="sensor"></param>
         private void AutoModeInternal(Object sensor)
         {
             if (sensor is ColorSensor)
             {
                 ColorSensor s = (ColorSensor)sensor;
+                PutMessageToConsole(s.ToString());
+                TextBoxColorValue.Text = s.ColorValue.ToString();
 
-                TextBoxColorSensor.Text = s.ToString();
-                if (s.ColorValue == 1) //<-- TODO : remplacer avec une ref qui pointe sur une ressource paramètrable
+                if (s.ColorValue == 1)
                 {
                     GoalAchieved = true;
-                    TextBoxConsole.Text += "\nGAME OVER -> Color on the ground Found !";
-                    // stop the car here;
+                    PutMessageToConsole("-----------------------------------------");
+                    PutMessageToConsole("---------------- GAME OVER --------------");
+                    PutMessageToConsole("-----------------------------------------");
+                    PutMessageToConsole("Color " + s.GetColorName() + "(" + s.ColorValue + ")" + " Found");
                 }
             }
             else if (sensor is UltrasonicSensor)
             {
                 UltrasonicSensor s = (UltrasonicSensor)sensor;
-                
-                // mettre algorithme de pilotage auto ici en fonction des objets détéctés.
-                // if s.DistanceProximity == Distances.DANGER .....
+                PutMessageToConsole(s.ToString());
             }
             
+        }
+
+        private void PutMessageToConsole(String message)
+        {
+            TextBoxConsole.Text += "\n" + message;
         }
     }
 }
