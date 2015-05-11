@@ -92,45 +92,6 @@ namespace IHM
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            Button b = (Button)sender;
-            if (b.Equals(Button1)){
-                //_controler.ExecuteCommand(Directions.BACKWARD_LEFT);
-            }
-            if (b.Equals(Button2))
-            {
-                //_controler.ExecuteCommand(Directions.BACKWARD);
-            }
-            if (b.Equals(Button3))
-            {
-                //_controler.ExecuteCommand(Directions.BACKWARD_RIGHT);
-            }
-            if (b.Equals(Button4))
-            {
-                //_controler.ExecuteCommand(Directions.TURN_LEFT);
-            }
-            if (b.Equals(Button5))
-            {
-               //_controler.ExecuteCommand(Directions.STOP);
-            }
-            if (b.Equals(Button6))
-            {
-               //_controler.ExecuteCommand(Directions.TURN_RIGHT);
-            }
-            if (b.Equals(Button7))
-            {
-               //_controler.ExecuteCommand(Directions.FORWARD_LEFT);
-            }
-            if (b.Equals(Button8))
-            {
-               //_controler.ExecuteCommand(Directions.FORWARD);
-            }
-            if (b.Equals(Button9))
-            {
-               //_controler.ExecuteCommand(Directions.FORWARD_RIGHT);
-            }
-        }
-        private void Window_KeyDown(object sender, KeyEventArgs e)
-        {
             switch (e.Key)
             {
                 case Key.NumPad1:
@@ -173,6 +134,9 @@ namespace IHM
         }
         private void ButtonStart_Click(object sender, RoutedEventArgs e)
         {
+            PutMessageToConsole("-----------------------------------------");
+            PutMessageToConsole("------------- AUTO PILOTE ON ------------");
+            PutMessageToConsole("-----------------------------------------");
             _controler.StartThread();
         }
 
@@ -217,7 +181,7 @@ namespace IHM
             {
                 ColorSensor s = (ColorSensor)sensor;
                 PutMessageToConsole(s.ToString());
-                TextBoxColorValue.Text = s.ColorValue.ToString();
+                //TextBoxColorValue.Text = s.ColorValue.ToString();
 
                 if (s.ColorValue == 1)
                 {
@@ -239,6 +203,47 @@ namespace IHM
         private void PutMessageToConsole(String message)
         {
             TextBoxConsole.Text += "\n" + message;
+        }
+
+        private void ButtonDirections_Click(object sender, RoutedEventArgs e)
+        {
+            Button b = (Button)sender;
+            if (b.Equals(Button1))
+            {
+                //_controler.ExecuteCommand(Directions.BACKWARD_LEFT);
+            }
+            if (b.Equals(Button2))
+            {
+                //_controler.ExecuteCommand(Directions.BACKWARD);
+            }
+            if (b.Equals(Button3))
+            {
+                //_controler.ExecuteCommand(Directions.BACKWARD_RIGHT);
+            }
+            if (b.Equals(Button4))
+            {
+                //_controler.ExecuteCommand(Directions.TURN_LEFT);
+            }
+            if (b.Equals(Button5))
+            {
+                //_controler.ExecuteCommand(Directions.STOP);
+            }
+            if (b.Equals(Button6))
+            {
+                //_controler.ExecuteCommand(Directions.TURN_RIGHT);
+            }
+            if (b.Equals(Button7))
+            {
+                //_controler.ExecuteCommand(Directions.FORWARD_LEFT);
+            }
+            if (b.Equals(Button8))
+            {
+                //_controler.ExecuteCommand(Directions.FORWARD);
+            }
+            if (b.Equals(Button9))
+            {
+                //_controler.ExecuteCommand(Directions.FORWARD_RIGHT);
+            }
         }
     }
 }
