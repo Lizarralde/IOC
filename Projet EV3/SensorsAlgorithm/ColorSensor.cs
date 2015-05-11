@@ -70,31 +70,31 @@ namespace SensorsAlgorithm
             switch (_colorValue)
             {
                 case 0:
-                    res = "Aucune";
+                    res = "None";
                     break;
                 case 1:
-                    res = "Noir";
+                    res = "Black";
                     break;
                 case 2:
-                    res = "Bleu";
+                    res = "Blue";
                     break;
                 case 3:
-                    res = "Vert";
+                    res = "Green";
                     break;
                 case 4:
-                    res = "Jaune";
+                    res = "Yellow";
                     break;
                 case 5:
-                    res = "Rouge";
+                    res = "Red";
                     break;
                 case 6:
-                    res = "Blanc";
+                    res = "White";
                     break;
                 case 7:
-                    res = "Marron";
+                    res = "Brown";
                     break;
                 default:
-                    res = "Erreur";
+                    res = "Color Error";
                     break;
             }
             return res;
@@ -107,7 +107,7 @@ namespace SensorsAlgorithm
         /// <returns>Chaîne qui représente l'objet actif.</returns>
         public override string ToString()
         {
-            return "ColorSensor { colorValue = " + ColorValue + " , colorName = " + GetColorName() + " }";
+            return "[ColorSensor] { colorValue = " + ColorValue + " , colorName = " + GetColorName() + " }";
         }
 
         /// <summary>
