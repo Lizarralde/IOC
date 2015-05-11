@@ -34,22 +34,18 @@ namespace IHM
         {
             InitializeComponent();
 
-            _controler = new SensorControler("com8");
+            try
+            {
+                _controler = new SensorControler("com8");
 
-            _controler.ColorSensor.OnColorChanged += AutoMode;
-            _controler.UltrasonicSensor.OnUltrasonicValueChanged += AutoMode;
-            _dispatcher = Application.Current.Dispatcher;
+                _controler.ColorSensor.OnColorChanged += AutoMode;
+                _controler.UltrasonicSensor.OnUltrasonicValueChanged += AutoMode;
+                _dispatcher = Application.Current.Dispatcher;
+            }
+            catch (Exception ex) { MessageBox.Show("Connexion à la brick échouée."; }
 
             _autoModeIsOn = false;
             _goalAchieved = false;
-
-            /*
-            var binding = new Binding("ColorValue");
-            binding.Source = TextBoxColorSensor;
-            binding.Path = _controler.ColorSensor.
-            //      binding.Path = new PropertyPath(ListBox.SelectedValueProperty);
-            TextBoxColorSensor.SetBinding(TextBlock.TextProperty, binding);
-             */
         }
 
         //--- CONTROL MODE METHODS
@@ -184,7 +180,7 @@ namespace IHM
                 PutMessageToConsole(s.ToString());
                 //TextBoxColorValue.Text = s.ColorValue.ToString();
 
-                if (s.ColorValue == 1)
+                if (s.GetColorName().Equals(ComboBoxTargetColor.SelectedItem.ToString()))
                 {
                     GoalAchieved = true;
                     PutMessageToConsole("-----------------------------------------");
@@ -204,6 +200,7 @@ namespace IHM
         private void PutMessageToConsole(String message)
         {
             TextBoxConsole.Text += "\n" + message;
+            Console.WriteLine(message);
         }
 
         private void ButtonDirections_Click(object sender, RoutedEventArgs e)
