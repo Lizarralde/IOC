@@ -79,8 +79,12 @@ namespace SensorsAlgorithm
             mut.WaitOne();
             Driving = false;
             mut.ReleaseMutex();
-            algoThread.Join();
-            algoThread = null;
+            if (algoThread != null)
+            {
+                algoThread.Join();
+                algoThread = null;
+            }
+            adapter.Close();
         }
 
         public void StartThread()
@@ -96,9 +100,6 @@ namespace SensorsAlgorithm
             mut.WaitOne();
             Driving = true;
 
-            adapter.ControlCar((int)Directions.FORWARD, (sbyte)65);
-            Thread.Sleep(250);
-
             do
             {
                 mut.ReleaseMutex();
@@ -106,18 +107,23 @@ namespace SensorsAlgorithm
                 colorSensor.ColorValue = FormatColorValue(adapter.GetColorSensorValue());
                 ultrasonicSensor.UltrasonicValue = FormatUltrasonicValue(adapter.GetUltrasonicSensorValue());
 
-                if (!colorSensor.ColorValue.Equals(ColorTarget))
+                if (colorSensor.ColorValue.Equals(ColorTarget))
                 {
-                    adapter.ControlCar((int)Directions.BACKWARD, (sbyte)100);
+                    adapter.ControlCar((int)Directions.STOP, (sbyte)0);
+                    Thread.Sleep(250);
+                }
+                else if (ultrasonicSensor.UltrasonicValue < 15)
+                {
+                    adapter.ControlCar((int)Directions.BACKWARD, (sbyte)10);
                     Thread.Sleep(750);
-                    adapter.ControlCar((int)Directions.TURN_LEFT, (sbyte)75);
+                    adapter.ControlCar((int)Directions.TURN_LEFT, (sbyte)10);
                     Thread.Sleep(2000);
-                    adapter.ControlCar((int)Directions.FORWARD, (sbyte)65);
+                    adapter.ControlCar((int)Directions.FORWARD, (sbyte)10);
                     Thread.Sleep(250);
                 }
                 else
                 {
-                    adapter.ControlCar((int)Directions.STOP, (sbyte)0);
+                    adapter.ControlCar((int)Directions.FORWARD, (sbyte)10);
                     Thread.Sleep(250);
                 }
 
@@ -130,14 +136,46 @@ namespace SensorsAlgorithm
 
         private int FormatUltrasonicValue(string p)
         {
-            return 20;
+            return Int32.Parse(p);
         }
 
         private int FormatColorValue(string p)
         {
-            // TODO : implemente better method
-            //throw new NotImplementedException();
             return Int32.Parse(p);
+        }
+
+        public void ExecuteCommand(Directions directions)
+        {
+            switch (directions)
+            {
+                case Directions.BACKWARD:
+                    adapter.ControlCar((int)directions, (sbyte)100);
+                    break;
+                case Directions.BACKWARD_LEFT:
+                    adapter.ControlCar((int)directions, (sbyte)65);
+                    break;
+                case Directions.BACKWARD_RIGHT:
+                    adapter.ControlCar((int)directions, (sbyte)65);
+                    break;
+                case Directions.FORWARD:
+                    adapter.ControlCar((int)directions, (sbyte)65);
+                    break;
+                case Directions.FORWARD_LEFT:
+                    adapter.ControlCar((int)directions, (sbyte)65);
+                    break;
+                case Directions.FORWARD_RIGHT:
+                    adapter.ControlCar((int)directions, (sbyte)65);
+                    break;
+                case Directions.STOP:
+                    adapter.ControlCar((int)directions, (sbyte)0);
+                    break;
+                case Directions.TURN_LEFT:
+                    adapter.ControlCar((int)directions, (sbyte)50);
+                    break;
+                case Directions.TURN_RIGHT:
+                    adapter.ControlCar((int)directions, (sbyte)50);
+                    break;
+            }
         }
     }
 }

@@ -23,9 +23,6 @@ namespace IHM
     public partial class MainWindow : Window
     {
         //--- PROPERTIES
-        private Boolean _autoModeIsOn;
-        private Boolean _goalAchieved;
-
         private SensorControler _controler;
         private Dispatcher _dispatcher;
         
@@ -35,21 +32,9 @@ namespace IHM
             InitializeComponent();
 
             _controler = new SensorControler("com8");
-
             _controler.ColorSensor.OnColorChanged += AutoMode;
             _controler.UltrasonicSensor.OnUltrasonicValueChanged += AutoMode;
             _dispatcher = Application.Current.Dispatcher;
-
-            _autoModeIsOn = false;
-            _goalAchieved = false;
-
-            /*
-            var binding = new Binding("ColorValue");
-            binding.Source = TextBoxColorSensor;
-            binding.Path = _controler.ColorSensor.
-            //      binding.Path = new PropertyPath(ListBox.SelectedValueProperty);
-            TextBoxColorSensor.SetBinding(TextBlock.TextProperty, binding);
-             */
         }
 
         //--- CONTROL MODE METHODS
@@ -66,10 +51,8 @@ namespace IHM
             Button7.IsEnabled = false;
             Button8.IsEnabled = false;
             Button9.IsEnabled = false;
-
-            // Tell the mindstorm auto mode is on by starting the thread
-            _autoModeIsOn = true;
         }
+
         private void RadioBoxManual_Click(object sender, RoutedEventArgs e)
         {
             // Disable controls
@@ -84,9 +67,6 @@ namespace IHM
             Button8.IsEnabled = true;
             Button9.IsEnabled = true;
 
-            // Tell the mindstorm manual mode is on by stopping the thread for the auto mode.     
-            _autoModeIsOn = false;
-
             // Stop Car driving thread
             _controler.StopThread();
         }
@@ -96,31 +76,31 @@ namespace IHM
             switch (e.Key)
             {
                 case Key.NumPad1:
-                    //_controler.ExecuteCommand(Directions.BACKWARD_LEFT);
+                    _controler.ExecuteCommand(Directions.BACKWARD_LEFT);
                     break;
                 case Key.NumPad2:
-                    //_controler.ExecuteCommand(Directions.BACKWARD);
+                    _controler.ExecuteCommand(Directions.BACKWARD);
                     break;
                 case Key.NumPad3:
-                    //_controler.ExecuteCommand(Directions.BACKWARD_RIGHT);
+                    _controler.ExecuteCommand(Directions.BACKWARD_RIGHT);
                     break;
                 case Key.NumPad4:
-                    //_controler.ExecuteCommand(Directions.TURN_LEFT);
+                    _controler.ExecuteCommand(Directions.TURN_LEFT);
                     break;
                 case Key.NumPad5:
-                    //_controler.ExecuteCommand(Directions.STOP);
+                    _controler.ExecuteCommand(Directions.STOP);
                     break;
                 case Key.NumPad6:
-                    //_controler.ExecuteCommand(Directions.TURN_RIGHT);
+                    _controler.ExecuteCommand(Directions.TURN_RIGHT);
                     break;
                 case Key.NumPad7:
-                    //_controler.ExecuteCommand(Directions.FORWARD_LEFT);
+                    _controler.ExecuteCommand(Directions.FORWARD_LEFT);
                     break;
                 case Key.NumPad8:
-                    //_controler.ExecuteCommand(Directions.FORWARD);
+                    _controler.ExecuteCommand(Directions.FORWARD);
                     break;
                 case Key.NumPad9:
-                    //_controler.ExecuteCommand(Directions.FORWARD_RIGHT);
+                    _controler.ExecuteCommand(Directions.FORWARD_RIGHT);
                     break;
                 default:
                     break;
@@ -133,37 +113,13 @@ namespace IHM
             _controler.StopThread();
             this.Close();
         }
+
         private void ButtonStart_Click(object sender, RoutedEventArgs e)
         {
             PutMessageToConsole("-----------------------------------------");
             PutMessageToConsole("------------- AUTO PILOTE ON ------------");
             PutMessageToConsole("-----------------------------------------");
             _controler.StartThread();
-        }
-
-        //--- AUTO MODE MANAGEMENT
-        public Boolean AutoModeIsOn
-        {
-            get
-            {
-                return _autoModeIsOn;
-            }
-            set
-            {
-                _autoModeIsOn = value;
-            }
-        }
-
-        public Boolean GoalAchieved
-        {
-            get
-            {
-                return _goalAchieved;
-            }
-            set
-            {
-                _goalAchieved = value;
-            }
         }
 
         // Method for the delegate wich
@@ -186,7 +142,6 @@ namespace IHM
 
                 if (s.ColorValue == 1)
                 {
-                    GoalAchieved = true;
                     PutMessageToConsole("-----------------------------------------");
                     PutMessageToConsole("---------------- GAME OVER --------------");
                     PutMessageToConsole("-----------------------------------------");
@@ -198,7 +153,6 @@ namespace IHM
                 UltrasonicSensor s = (UltrasonicSensor)sensor;
                 PutMessageToConsole(s.ToString());
             }
-            
         }
 
         private void PutMessageToConsole(String message)
@@ -211,39 +165,39 @@ namespace IHM
             Button b = (Button)sender;
             if (b.Equals(Button1))
             {
-                //_controler.ExecuteCommand(Directions.BACKWARD_LEFT);
+                _controler.ExecuteCommand(Directions.BACKWARD_LEFT);
             }
             if (b.Equals(Button2))
             {
-                //_controler.ExecuteCommand(Directions.BACKWARD);
+                _controler.ExecuteCommand(Directions.BACKWARD);
             }
             if (b.Equals(Button3))
             {
-                //_controler.ExecuteCommand(Directions.BACKWARD_RIGHT);
+                _controler.ExecuteCommand(Directions.BACKWARD_RIGHT);
             }
             if (b.Equals(Button4))
             {
-                //_controler.ExecuteCommand(Directions.TURN_LEFT);
+                _controler.ExecuteCommand(Directions.TURN_LEFT);
             }
             if (b.Equals(Button5))
             {
-                //_controler.ExecuteCommand(Directions.STOP);
+                _controler.ExecuteCommand(Directions.STOP);
             }
             if (b.Equals(Button6))
             {
-                //_controler.ExecuteCommand(Directions.TURN_RIGHT);
+                _controler.ExecuteCommand(Directions.TURN_RIGHT);
             }
             if (b.Equals(Button7))
             {
-                //_controler.ExecuteCommand(Directions.FORWARD_LEFT);
+                _controler.ExecuteCommand(Directions.FORWARD_LEFT);
             }
             if (b.Equals(Button8))
             {
-                //_controler.ExecuteCommand(Directions.FORWARD);
+                _controler.ExecuteCommand(Directions.FORWARD);
             }
             if (b.Equals(Button9))
             {
-                //_controler.ExecuteCommand(Directions.FORWARD_RIGHT);
+                _controler.ExecuteCommand(Directions.FORWARD_RIGHT);
             }
         }
     }

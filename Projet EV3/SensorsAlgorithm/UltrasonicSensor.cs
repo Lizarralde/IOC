@@ -49,7 +49,7 @@ namespace SensorsAlgorithm
 
         public override string ToString()
         {
-            return "UltrasonicSensor { _ultrasonicValue = " + UltrasonicValue + " }";
+            return "[UltrasonicSensor] { _ultrasonicValue = " + UltrasonicValue + " }";
         }
 
         public override bool Equals(Object obj)
