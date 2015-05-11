@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace SensorsAlgorithm
 {
-    public enum Distances
+    public class InvalidUltrasonicValueException : Exception
     {
-        DANGER = 0,
-        SURE = 1
+        public InvalidUltrasonicValueException(String message) : base(message) { }
     }
 }

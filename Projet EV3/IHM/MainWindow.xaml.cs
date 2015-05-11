@@ -34,10 +34,10 @@ namespace IHM
         {
             InitializeComponent();
 
-            _controler = new SensorControler("usb");
+            _controler = new SensorControler("com8");
 
             _controler.ColorSensor.OnColorChanged += AutoMode;
-            //_ultrasonicSensor.OnDistanceChanged += AutoMode;
+            _controler.UltrasonicSensor.OnUltrasonicValueChanged += AutoMode;
 
             _dispatcher = Application.Current.Dispatcher;
         }
