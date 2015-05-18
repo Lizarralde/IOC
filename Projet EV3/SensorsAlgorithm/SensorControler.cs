@@ -76,7 +76,6 @@ namespace SensorsAlgorithm
         // Constructeur par défaut
         public SensorControler(string link)
         {
-            ColorTarget = 2;
             ColorSensor = new ColorSensor();
             IRSensor = new IRSensor();
             Adapter = new Adapter(link);

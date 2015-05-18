@@ -33,6 +33,7 @@ namespace IHM
 
             _controler = new SensorControler("com8");
 
+            _controler.ColorTarget = (int)ComboBoxTargetColor.SelectedItem;
             _controler.ColorSensor.OnColorChanged += AutoMode;
             _controler.IRSensor.OnIRValueChanged += AutoMode;
 
@@ -213,7 +214,8 @@ namespace IHM
 
         private void ComboBoxTargetColor_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _controler.ColorTarget = (int) ComboBoxTargetColor.SelectedItem;
+            if (_controler != null)
+                _controler.ColorTarget = (int)ComboBoxTargetColor.SelectedItem;
         }
     }
 }
