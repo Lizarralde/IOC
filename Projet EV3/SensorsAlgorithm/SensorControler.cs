@@ -139,7 +139,15 @@ namespace SensorsAlgorithm
                 {
                     Adapter.ControlCar((int)Directions.BACKWARD, (sbyte)50, (sbyte)0);
                     Thread.Sleep(250);
-                    Adapter.ControlCar((int)Directions.TURN_LEFT, (sbyte)50, (sbyte)0);
+                    switch (r.Next(2))
+                    {
+                        case 0:
+                            Adapter.ControlCar((int)Directions.TURN_LEFT, (sbyte)50, (sbyte)0);
+                            break;
+                        case 1:
+                            Adapter.ControlCar((int)Directions.TURN_RIGHT, (sbyte)50, (sbyte)0);
+                            break;
+                    }
                     Thread.Sleep(r.Next(250, 500));
                     switch (r.Next(3))
                     {
