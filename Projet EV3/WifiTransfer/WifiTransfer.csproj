@@ -29,12 +29,20 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Release\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="LibUsbDotNet">
-      <HintPath>.\LibUsbDotNet.dll</HintPath>
+      <HintPath>..\lib\LibUsbDotNet.dll</HintPath>
     </Reference>
     <Reference Include="MonoBrick">
-      <HintPath>.\MonoBrick.dll</HintPath>
+      <HintPath>..\lib\MonoBrick.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

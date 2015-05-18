@@ -29,6 +29,14 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Release\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -41,11 +49,11 @@
   <ItemGroup>
     <Compile Include="ColorSensor.cs" />
     <Compile Include="Directions.cs" />
-    <Compile Include="Distances.cs" />
+    <Compile Include="InvalidIRValueException.cs" />
     <Compile Include="InvalidColorValueException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SensorControler.cs" />
-    <Compile Include="UltrasonicSensor.cs" />
+    <Compile Include="IRSensor.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WifiTransfer\WifiTransfer.csproj">
