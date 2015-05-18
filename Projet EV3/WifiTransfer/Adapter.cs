@@ -10,67 +10,84 @@ namespace WifiTransfer
 {
     public class Adapter
     {
-        private Brick<Sensor,Sensor,Sensor,Sensor> brick;
-        
-        public Adapter(string connectionMethod)
+        // Déclaration de la brick
+        private Brick<Sensor, Sensor, Sensor, Sensor> _brick;
+
+        // Getter/setter
+        public Brick<Sensor, Sensor, Sensor, Sensor> Brick
         {
-            brick = new Brick<Sensor, Sensor, Sensor, Sensor>(connectionMethod);
-            brick.Connection.Open();
-            brick.Sensor1 = new ColorSensor(ColorMode.Color);
-            brick.Sensor2 = new IRSensor(IRMode.Proximity);
-            brick.Vehicle.LeftPort = MotorPort.OutA;
-            brick.Vehicle.RightPort = MotorPort.OutD;
-            brick.Vehicle.ReverseLeft = false;
-            brick.Vehicle.ReverseRight = false;
+            get { return _brick; }
+            set { _brick = value; }
         }
 
-        public void ControlCar(int direction, sbyte speed)
+        //Constructeur par défaut
+        public Adapter(string link)
+        {
+            Brick = new Brick<Sensor, Sensor, Sensor, Sensor>(link);
+            Brick.Connection.Open();
+
+            // Déclaration des capteurs
+            Brick.Sensor1 = new IRSensor(IRMode.Proximity);
+            Brick.Sensor4 = new ColorSensor(ColorMode.Color);
+
+            // Déclaration des moteurs
+            Brick.Vehicle.LeftPort = MotorPort.OutA;
+            Brick.Vehicle.RightPort = MotorPort.OutD;
+            Brick.Vehicle.ReverseLeft = false;
+            Brick.Vehicle.ReverseRight = false;
+        }
+
+        // Permet de déplacer le robot dans la direction souhaitée
+        public void ControlCar(int direction, sbyte speed, sbyte angle)
         {
             switch (direction)
             {
                 case 8:
-                    brick.Vehicle.Forward(speed);
+                    Brick.Vehicle.Forward(speed);
                     break;
                 case 2:
-                    brick.Vehicle.Backward(speed);
+                    Brick.Vehicle.Backward(speed);
                     break;
                 case 6:
-                    brick.Vehicle.SpinRight(speed);
+                    Brick.Vehicle.SpinRight(speed);
                     break;
                 case 4:
-                    brick.Vehicle.SpinLeft(speed);
+                    Brick.Vehicle.SpinLeft(speed);
                     break;
                 case 7:
-                    brick.Vehicle.TurnLeftForward(speed, 50);
+                    Brick.Vehicle.TurnLeftForward(speed, angle);
                     break;
                 case 9:
-                    brick.Vehicle.TurnRightForward(speed, 50);
+                    Brick.Vehicle.TurnRightForward(speed, angle);
                     break;
                 case 1:
-                    brick.Vehicle.TurnRightReverse(speed, 50);
+                    Brick.Vehicle.TurnRightReverse(speed, angle);
                     break;
                 case 3:
-                    brick.Vehicle.TurnLeftReverse(speed, 50);
+                    Brick.Vehicle.TurnLeftReverse(speed, angle);
                     break;
                 case 5:
-                    brick.Vehicle.Off();
+                    Brick.Vehicle.Off();
                     break;
             }
         }
 
-        public string GetColorSensorValue()
+        // Retourne la valeur du capteur colorimétrique
+        public int GetColorSensorValue()
         {
-            return "" + (int) ((ColorSensor) brick.Sensor1).ReadColor();
+            return (int)((ColorSensor)Brick.Sensor4).ReadColor();
         }
 
-        public string GetUltrasonicSensorValue()
+        // Retourne la valeur de l'IR
+        public string GetIRSensorValue()
         {
-            return ((IRSensor)brick.Sensor2).ReadAsString();
+            return ((IRSensor)Brick.Sensor1).ReadAsString();
         }
 
-        public void Close()
+        // Ferme la connexion à la brick
+        public void CloseConnection()
         {
-            brick.Connection.Close();
+            Brick.Connection.Close();
         }
     }
 }

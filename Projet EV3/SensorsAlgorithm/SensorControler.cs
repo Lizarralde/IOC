@@ -10,55 +10,31 @@ namespace SensorsAlgorithm
 {
     public class SensorControler
     {
-        private ColorSensor colorSensor;
-        private UltrasonicSensor ultrasonicSensor;
-        private Adapter adapter;
-        private Thread algoThread;
-        private bool driving;
-        private int colorTarget;
+        private bool _driving;
+        private int _colorTarget;
 
-        private Mutex mut;
+        private Adapter _adapter;
+        private ColorSensor _colorSensor;
+        private IRSensor _IRSensor;
 
-        public ColorSensor ColorSensor
-        {
-            get { return colorSensor; }
-            set { colorSensor = value; }
-        }
-        public UltrasonicSensor UltrasonicSensor
-        {
-            get { return ultrasonicSensor; }
-            set { ultrasonicSensor = value; }
-        }
+        private Thread _algorithm;
+        private Mutex _mutex;
 
-        public Mutex Mut
-        {
-            get { return mut; }
-            set { mut = value; }
-        }
-
+        // Getter/Setter
         public bool Driving
         {
-            get { return driving; }
-            set { driving = value; }
-        }
-
-        public SensorControler(string connectionMethod)
-        {
-            ColorTarget = 1;
-            colorSensor = new ColorSensor();
-            ultrasonicSensor = new UltrasonicSensor();
-            adapter = new Adapter(connectionMethod);
-            mut = new Mutex();
+            get { return _driving; }
+            set { _driving = value; }
         }
 
         public int ColorTarget
         {
-            get { return colorTarget; }
+            get { return _colorTarget; }
             set
             {
                 if (value >= 0 && value <= 7)
                 {
-                    colorTarget = value;
+                    _colorTarget = value;
                 }
                 else
                 {
@@ -67,117 +43,153 @@ namespace SensorsAlgorithm
             }
         }
 
+        public Adapter Adapter
+        {
+            get { return _adapter; }
+            set { _adapter = value; }
+        }
+
+        public ColorSensor ColorSensor
+        {
+            get { return _colorSensor; }
+            set { _colorSensor = value; }
+        }
+
+        public IRSensor IRSensor
+        {
+            get { return _IRSensor; }
+            set { _IRSensor = value; }
+        }
+
+        public Thread Algorithm
+        {
+            get { return _algorithm; }
+            set { _algorithm = value; }
+        }
+
+        public Mutex Mutex
+        {
+            get { return _mutex; }
+            set { _mutex = value; }
+        }
+
+        // Constructeur par défaut
+        public SensorControler(string link)
+        {
+            ColorTarget = 2;
+            ColorSensor = new ColorSensor();
+            IRSensor = new IRSensor();
+            Adapter = new Adapter(link);
+            Mutex = new Mutex();
+        }
+
+        // Fermeture de la connexion à la brick
         public void closeAdapter()
         {
-            adapter.Close();
+            Adapter.CloseConnection();
         }
 
-        public void AbortThread()
-        {
-            algoThread.Abort();
-            algoThread.Join();
-            algoThread = null;
-        }
-
+        // Arrêt du thread de pilotage automatique
         public void StopThread()
         {
-            mut.WaitOne();
+            Mutex.WaitOne();
+
             Driving = false;
-            mut.ReleaseMutex();
-            if (algoThread != null)
+
+            Mutex.ReleaseMutex();
+
+            if (Algorithm != null)
             {
-                algoThread.Join();
-                algoThread = null;
+                Algorithm.Join();
+                Algorithm = null;
             }
         }
 
+        // Départ du thread de pilotage automatique
         public void StartThread()
         {
-            if (algoThread != null)
+            if (Algorithm != null)
                 return;
-            algoThread = new Thread(this.CarDriving);
-            algoThread.Start();
+
+            Algorithm = new Thread(this.CarDriving);
+            Algorithm.Start();
         }
 
+        // Algorithme de pilotage automatique
         public void CarDriving()
         {
-            mut.WaitOne();
+            Mutex.WaitOne();
+
             Driving = true;
 
             do
             {
-                mut.ReleaseMutex();
+                Mutex.ReleaseMutex();
 
-                colorSensor.ColorValue = FormatColorValue(adapter.GetColorSensorValue());
-                ultrasonicSensor.UltrasonicValue = FormatUltrasonicValue(adapter.GetUltrasonicSensorValue());
+                ColorSensor.ColorValue = Adapter.GetColorSensorValue();
+                IRSensor.IRValue = Int32.Parse(Adapter.GetIRSensorValue());
 
-                if (colorSensor.ColorValue.Equals(ColorTarget))
+                if (ColorSensor.ColorValue.Equals(ColorTarget))
                 {
-                    adapter.ControlCar((int)Directions.STOP, (sbyte)0);
+                    Adapter.ControlCar((int)Directions.STOP, (sbyte)0, (sbyte)0);
                     Thread.Sleep(250);
                 }
-                else if (ultrasonicSensor.UltrasonicValue < 15)
+                else if (IRSensor.IRValue < 15)
                 {
-                    adapter.ControlCar((int)Directions.BACKWARD, (sbyte)100);
-                    Thread.Sleep(750);
-                    adapter.ControlCar((int)Directions.TURN_LEFT, (sbyte)65);
-                    Thread.Sleep(2000);
-                    adapter.ControlCar((int)Directions.FORWARD, (sbyte)65);
+                    Adapter.ControlCar((int)Directions.BACKWARD, (sbyte)50, (sbyte)0);
+                    Thread.Sleep(250);
+                    Adapter.ControlCar((int)Directions.TURN_LEFT, (sbyte)50, (sbyte)0);
+                    Thread.Sleep(250);
+                    Adapter.ControlCar((int)Directions.FORWARD, (sbyte)50, (sbyte)0);
                     Thread.Sleep(250);
                 }
                 else
                 {
-                    adapter.ControlCar((int)Directions.FORWARD, (sbyte)65);
+                    Adapter.ControlCar((int)Directions.FORWARD, (sbyte)50, (sbyte)0);
                     Thread.Sleep(250);
                 }
 
-                mut.WaitOne();
+                Mutex.WaitOne();
             } while (Driving);
 
-            mut.ReleaseMutex();
+            Mutex.ReleaseMutex();
+
             return;
         }
 
-        private int FormatUltrasonicValue(string p)
-        {
-            return Int32.Parse(p);
-        }
-
-        private int FormatColorValue(string p)
-        {
-            return Int32.Parse(p);
-        }
-
+        // Permet le pilotage manuel du robot
         public void ExecuteCommand(Directions directions)
         {
             switch (directions)
             {
                 case Directions.BACKWARD:
-                    adapter.ControlCar((int)directions, (sbyte)100);
+                    _adapter.ControlCar((int)directions, (sbyte)50, (sbyte)0);
                     break;
                 case Directions.BACKWARD_LEFT:
-                    adapter.ControlCar((int)directions, (sbyte)65);
+                    _adapter.ControlCar((int)directions, (sbyte)50, (sbyte)50);
                     break;
                 case Directions.BACKWARD_RIGHT:
-                    adapter.ControlCar((int)directions, (sbyte)65);
+                    _adapter.ControlCar((int)directions, (sbyte)50, (sbyte)50);
                     break;
                 case Directions.FORWARD:
-                    adapter.ControlCar((int)directions, (sbyte)65);
+                    _adapter.ControlCar((int)directions, (sbyte)50, (sbyte)0);
                     break;
                 case Directions.FORWARD_LEFT:
-                    adapter.ControlCar((int)directions, (sbyte)65);
+                    _adapter.ControlCar((int)directions, (sbyte)50, (sbyte)50);
                     break;
                 case Directions.FORWARD_RIGHT:
-                    adapter.ControlCar((int)directions, (sbyte)65);
+                    _adapter.ControlCar((int)directions, (sbyte)50, (sbyte)50);
                     break;
                 case Directions.STOP:
-                    adapter.ControlCar((int)directions, (sbyte)0);
+                    _adapter.ControlCar((int)directions, (sbyte)0, (sbyte)0);
                     break;
                 case Directions.TURN_LEFT:
-                    adapter.ControlCar((int)directions, (sbyte)50);
+                    _adapter.ControlCar((int)directions, (sbyte)50, (sbyte)0);
                     break;
                 case Directions.TURN_RIGHT:
-                    adapter.ControlCar((int)directions, (sbyte)50);
+                    _adapter.ControlCar((int)directions, (sbyte)50, (sbyte)0);
+                    break;
+                default:
                     break;
             }
         }

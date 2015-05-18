@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace SensorsAlgorithm
 {
-    public class InvalidUltrasonicValueException : Exception
+    public class InvalidIRValueException : Exception
     {
-        public InvalidUltrasonicValueException(String message) : base(message) { }
+        public InvalidIRValueException(String message) : base(message) { }
     }
 }

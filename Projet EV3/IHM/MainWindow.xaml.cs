@@ -25,7 +25,7 @@ namespace IHM
         //--- PROPERTIES
         private SensorControler _controler;
         private Dispatcher _dispatcher;
-        
+
         //--- CONSTRUCTOR
         public MainWindow()
         {
@@ -34,7 +34,8 @@ namespace IHM
             _controler = new SensorControler("com8");
 
             _controler.ColorSensor.OnColorChanged += AutoMode;
-            _controler.UltrasonicSensor.OnUltrasonicValueChanged += AutoMode;
+            _controler.IRSensor.OnIRValueChanged += AutoMode;
+
             _dispatcher = Application.Current.Dispatcher;
         }
 
@@ -71,9 +72,9 @@ namespace IHM
             // Stop Car driving thread
             _controler.StopThread();
 
-            PutMessageToConsole("-----------------------------------------");
-            PutMessageToConsole("------------- MANUAL PILOTE ON ----------");
-            PutMessageToConsole("-----------------------------------------");
+            PutMessageToConsole("----------------------------------------");
+            PutMessageToConsole("------------ MANUAL PILOT ON -----------");
+            PutMessageToConsole("----------------------------------------");
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -111,7 +112,7 @@ namespace IHM
                     break;
             }
         }
-        
+
         //--- BUTTONS METHODS
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
@@ -122,10 +123,11 @@ namespace IHM
 
         private void ButtonStart_Click(object sender, RoutedEventArgs e)
         {
-            PutMessageToConsole("-----------------------------------------");
-            PutMessageToConsole("------------- AUTO PILOTE ON ------------");
-            PutMessageToConsole("-----------------------------------------");
             _controler.StartThread();
+
+            PutMessageToConsole("----------------------------------------");
+            PutMessageToConsole("------------ AUTO PILOTE ON ------------");
+            PutMessageToConsole("----------------------------------------");
         }
 
         // Method for the delegate wich
@@ -143,35 +145,34 @@ namespace IHM
             if (sensor is ColorSensor)
             {
                 ColorSensor s = (ColorSensor)sensor;
+                TextBoxColorSensor.Text = s.GetColorName();
                 PutMessageToConsole(s.ToString());
-                TextBoxColorValue.Text = s.ColorValue.ToString();
 
                 if (s.GetColorName().Equals(ComboBoxTargetColor.SelectedItem.ToString()))
                 {
-                    PutMessageToConsole("-----------------------------------------");
-                    PutMessageToConsole("---------------- GAME OVER --------------");
-                    PutMessageToConsole("-----------------------------------------");
-                    PutMessageToConsole("Color " + s.GetColorName() + "(" + s.ColorValue + ")" + " Found");
+                    PutMessageToConsole("----------------------------------------");
+                    PutMessageToConsole("---------- COLOR TARGET FOUND ----------");
+                    PutMessageToConsole("----------------------------------------");
                 }
             }
-            else if (sensor is UltrasonicSensor)
+            else if (sensor is IRSensor)
             {
-                UltrasonicSensor s = (UltrasonicSensor)sensor;
-                TextBoxUltrasonicSensor.Text = s.UltrasonicValue.ToString();
+                IRSensor s = (IRSensor)sensor;
+                TextBoxUltrasonicSensor.Text = s.IRValue.ToString();
                 PutMessageToConsole(s.ToString());
             }
         }
 
         private void PutMessageToConsole(String message)
         {
-            TextBoxConsole.Text += "\n" + message;
-            TextBoxConsole.AppendText(message);
+            TextBoxConsole.AppendText("\r\n" + message);
             Console.WriteLine(message);
         }
 
         private void ButtonDirections_Click(object sender, RoutedEventArgs e)
         {
             Button b = (Button)sender;
+
             if (b.Equals(Button1))
             {
                 _controler.ExecuteCommand(Directions.BACKWARD_LEFT);
