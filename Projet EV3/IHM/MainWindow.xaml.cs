@@ -167,6 +167,7 @@ namespace IHM
         private void PutMessageToConsole(String message)
         {
             TextBoxConsole.AppendText("\r\n" + message);
+            TextBoxConsole.ScrollToLine(TextBoxConsole.LineCount - 1);
             Console.WriteLine(message);
         }
 
