@@ -70,6 +70,10 @@ namespace IHM
 
             // Stop Car driving thread
             _controler.StopThread();
+
+            PutMessageToConsole("-----------------------------------------");
+            PutMessageToConsole("------------- MANUAL PILOTE ON ----------");
+            PutMessageToConsole("-----------------------------------------");
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -140,7 +144,7 @@ namespace IHM
             {
                 ColorSensor s = (ColorSensor)sensor;
                 PutMessageToConsole(s.ToString());
-                //TextBoxColorValue.Text = s.ColorValue.ToString();
+                TextBoxColorValue.Text = s.ColorValue.ToString();
 
                 if (s.GetColorName().Equals(ComboBoxTargetColor.SelectedItem.ToString()))
                 {
@@ -153,6 +157,7 @@ namespace IHM
             else if (sensor is UltrasonicSensor)
             {
                 UltrasonicSensor s = (UltrasonicSensor)sensor;
+                TextBoxUltrasonicSensor.Text = s.UltrasonicValue.ToString();
                 PutMessageToConsole(s.ToString());
             }
         }
@@ -160,6 +165,7 @@ namespace IHM
         private void PutMessageToConsole(String message)
         {
             TextBoxConsole.Text += "\n" + message;
+            TextBoxConsole.AppendText(message);
             Console.WriteLine(message);
         }
 
