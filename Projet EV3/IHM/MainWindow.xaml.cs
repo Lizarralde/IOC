@@ -210,5 +210,10 @@ namespace IHM
                 _controler.ExecuteCommand(Directions.FORWARD_RIGHT);
             }
         }
+
+        private void ComboBoxTargetColor_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            _controler.ColorTarget = (int) ComboBoxTargetColor.SelectedItem;
+        }
     }
 }

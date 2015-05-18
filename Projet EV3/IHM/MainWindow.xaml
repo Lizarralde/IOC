@@ -1,7 +1,7 @@
 ﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="IHM.MainWindow"
+        xmlns:System="clr-namespace:System;assembly=mscorlib" xmlns:EV3="clr-namespace:MonoBrick.EV3;assembly=MonoBrick" x:Class="IHM.MainWindow"
         Title="Mindstorm Monitoring" Height="399" Width="661.667" WindowStartupLocation="CenterScreen" KeyDown="ButtonDirections_Click">
     <Grid>
 
@@ -22,15 +22,15 @@
         <TextBox x:Name="TextBoxDirection" HorizontalAlignment="Left" Height="23" Margin="552,145,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="61" IsReadOnly="True" Visibility="Hidden"/>
 
         <Label Content="Target color" HorizontalAlignment="Left" Margin="430,190,0,0" VerticalAlignment="Top"/>
-        <ComboBox x:Name="ComboBoxTargetColor" HorizontalAlignment="Left" Margin="552,193,0,0" VerticalAlignment="Top" Width="61" SelectedIndex="1">
-            <System:String>None</System:String>
-            <System:String>Black</System:String>
-            <System:String>Blue</System:String>
-            <System:String>Green</System:String>
-            <System:String>Yellow</System:String>
-            <System:String>Red</System:String>
-            <System:String>White</System:String>
-            <System:String>Brown</System:String>
+        <ComboBox x:Name="ComboBoxTargetColor" HorizontalAlignment="Left" Margin="552,193,0,0" VerticalAlignment="Top" Width="61" SelectedIndex="1" IsSynchronizedWithCurrentItem="False" SelectionChanged="ComboBoxTargetColor_SelectionChanged">
+            <EV3:Color>None</EV3:Color>
+            <EV3:Color>Black</EV3:Color>
+            <EV3:Color>Blue</EV3:Color>
+            <EV3:Color>Green</EV3:Color>
+            <EV3:Color>Yellow</EV3:Color>
+            <EV3:Color>Red</EV3:Color>
+            <EV3:Color>White</EV3:Color>
+            <EV3:Color>Brown</EV3:Color>
         </ComboBox>
 
         <!-- console -->
