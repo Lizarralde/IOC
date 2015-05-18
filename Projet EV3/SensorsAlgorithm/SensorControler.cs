@@ -117,6 +117,8 @@ namespace SensorsAlgorithm
         // Algorithme de pilotage automatique
         public void CarDriving()
         {
+            Random r = new Random();
+
             Mutex.WaitOne();
 
             Driving = true;
@@ -138,9 +140,20 @@ namespace SensorsAlgorithm
                     Adapter.ControlCar((int)Directions.BACKWARD, (sbyte)50, (sbyte)0);
                     Thread.Sleep(250);
                     Adapter.ControlCar((int)Directions.TURN_LEFT, (sbyte)50, (sbyte)0);
-                    Thread.Sleep(250);
-                    Adapter.ControlCar((int)Directions.FORWARD, (sbyte)50, (sbyte)0);
-                    Thread.Sleep(250);
+                    Thread.Sleep(r.Next(250, 500));
+                    switch (r.Next(3))
+                    {
+                        case 0:
+                            Adapter.ControlCar((int)Directions.FORWARD, (sbyte)50, (sbyte)0);
+                            break;
+                        case 1:
+                            Adapter.ControlCar((int)Directions.FORWARD_LEFT, (sbyte)50, (sbyte)50);
+                            break;
+                        case 2:
+                            Adapter.ControlCar((int)Directions.FORWARD_RIGHT, (sbyte)50, (sbyte)50);
+                            break;
+                    }
+                    Thread.Sleep(1000);
                 }
                 else
                 {
