@@ -22,3 +22,11 @@
 *.exe
 *.out
 *.app
+
+# Debug
+Projet EV3/IHM/bin/
+Projet EV3/IHM/obj/
+Projet EV3/WifiTransfer/bin/
+Projet EV3/WifiTransfer/obj/
+Projet EV3/SensorsAlgorithm/bin/
+Projet EV3/SensorsAlgorithm/obj/
